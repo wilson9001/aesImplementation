@@ -27,6 +27,8 @@ void subBytes(BYTE state[4][Nb]);
 
 void shiftRows(BYTE state[4][Nb]);
 
+BYTE ffMultiply(BYTE a, BYTE b);
+
 void mixColumns(BYTE state[4][Nb]);
 
 void addRoundKey(BYTE state[4][Nb], word* w);
