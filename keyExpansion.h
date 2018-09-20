@@ -1,6 +1,8 @@
 #ifndef KEY_EXPANSION
 #define KEY_EXPANSION
 
+#include "constants.h"
+
 const unsigned int Rcon[] = { //TODO: Determine type...short?
     0x00000000, // Rcon[] is 1-based, so the first entry is just a place holder
     0x01000000, 0x02000000, 0x04000000, 0x08000000,
@@ -22,5 +24,7 @@ const unsigned int Rcon[] = { //TODO: Determine type...short?
 void subWord();
 
 void rotWord();
+
+void keyExpansion(BYTE* key/*[4*Nk]*/, word* w/*[Nb*(Nr+1)]*/, keyLength currentKeyLength);
 
 #endif

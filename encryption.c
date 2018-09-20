@@ -1,6 +1,6 @@
 #include "encryption.h"
 
-void cipher(BYTE in[4 * Nb], BYTE out[4 * Nb], word *w, keyLength currentKeyLength)
+void cipher(BYTE* in/*[4 * Nb]*/, BYTE* out/*[4 * Nb]*/, word* w, keyLength currentKeyLength)
 {
     BYTE state[4][Nb];
 
@@ -12,19 +12,19 @@ void cipher(BYTE in[4 * Nb], BYTE out[4 * Nb], word *w, keyLength currentKeyLeng
         }
     }
 
-    addRoundKey(state, w[0][Nb - 1]);
+    addRoundKey(state, w[0]/*[Nb - 1]*/); //Only going to pass in pointer to first word, will iterate from pointer in actual function
 
     for (int round = 1; 1 < Nr[currentKeyLength]; round++)
     {
         subBytes(state);
         shiftRows(state);
         mixColumns(state);
-        addRoundKey(state, w[round * Nb][(round + 1) * (Nb - 1)]);
+        addRoundKey(state, w[round * Nb]);
     }
 
     subBytes(state);
     shiftRows(state);
-    addRoundKey(state, w[Nr[currentKeyLength] * Nb][(Nr[currentKeyLength] + 1) * (Nb - 1)]);
+    addRoundKey(state, w[Nr[currentKeyLength] * Nb]);
 
     for (int row = 0; row < 4; row++)
     {
@@ -35,7 +35,7 @@ void cipher(BYTE in[4 * Nb], BYTE out[4 * Nb], word *w, keyLength currentKeyLeng
     }
 }
 
-void subBytes(BYTE state[4][Nb])
+void subBytes(BYTE** state/*[4][Nb]*/)
 {
     BYTE SRow, SColumn;
 
@@ -51,7 +51,7 @@ void subBytes(BYTE state[4][Nb])
     }
 }
 
-void shiftRows(BYTE state[4][Nb])
+void shiftRows(BYTE** state/*[4][Nb]*/)
 {
     BYTE rowCopy[Nb];
 
@@ -120,7 +120,7 @@ BYTE xtime(BYTE in)
     return in;
 }
 
-void mixColumns(BYTE state[4][Nb])
+void mixColumns(BYTE** state/*[4][Nb]*/)
 {
     const BYTE mixColumnVector[] = {0x02, 0x03, 0x01, 0x01};
 
@@ -155,7 +155,13 @@ void mixColumns(BYTE state[4][Nb])
     }
 }
 
-void addRoundKey(BYTE state[4][Nb], word *w)
+void addRoundKey(BYTE** state/*[4][Nb]*/, word* w/*[Nb]*/)
 {
-    
+    for(int column = 0; column < Nb; column++)
+    {
+        for(int row = 0; row < 4; row++)
+        {
+            state[row][column] ^= w[column][row]; //Inverted indexing because word is typeDef BYTE[4], so we index the word first then the row in the word.
+        }
+    }
 }
