@@ -57,19 +57,19 @@ BYTE ffMultiply(BYTE a, BYTE b)
     BYTE bitsSet[8];
     BYTE totalSet = 0;
 
-    printf("\nInside ffMultiply, a = 0x%x, b = 0x%x\nTesting Bits of b:", a, b);
+    //printf("\nInside ffMultiply, a = 0x%x, b = 0x%x\nTesting Bits of b:", a, b);
 
     for (int i = 7; i >= 0; i--)
     {
         if ((bitTest[i] ^ b) < b) //test if a bit was set and now is not
         {
-            printf("\nBit %d was set.", i);
+            //printf("\nBit %d was set.", i);
             bitsSet[totalSet] = i;
             totalSet++;
         }
     }
 
-    printf("\nLargest bit set was %d", bitsSet[0]);
+    //printf("\nLargest bit set was %d", bitsSet[0]);
 
     BYTE xTimeResults[bitsSet[0] + 1];
 
@@ -78,7 +78,7 @@ BYTE ffMultiply(BYTE a, BYTE b)
     for (int i = 1; i <= bitsSet[0]; i++) //keep feeding xtime to obtain results of multiplying a by higher powers of x
     {
         xTimeResults[i] = xtime(xTimeResults[i - 1]);
-        printf("\nxTime response is: 0x%x", xTimeResults[i]);
+       // printf("\nxTime response is: 0x%x", xTimeResults[i]);
     }
 
     BYTE result = 0x00;
@@ -86,7 +86,7 @@ BYTE ffMultiply(BYTE a, BYTE b)
     for (int i = 0; i < totalSet; i++)
     {
         result = result ^ xTimeResults[bitsSet[i]]; //retrieve each result corresponding to a bit set in b and XOR it into the result var to get the result of multiplying by all the x's set in b
-        printf("\nResults currently is 0x%x", result);
+        //printf("\nResults currently is 0x%x", result);
     }
 
     return result;
@@ -112,22 +112,27 @@ void mixColumns(BYTE state[4][Nb], const BYTE mixingVector[4])
 {
     int startingIndex = 0;
     BYTE newByteData[4];
+    BYTE newState[4][Nb];
 
     for (int column = 0; column < Nb; column++)
     {
+        //printf("\n--------Column %d--------", column);
         for (int row = 0; row < 4; row++)
         {
+            //printf("\n----Row %d----", row);
             for (int i = 0; i < 4; i++)
             {
                 newByteData[i] = ffMultiply(mixingVector[(startingIndex + i) % 4], state[i][column]); //create byte to combine later by multiplication with corresponding mix column vector byte
+                //printf("\nMultiplying 0x%02x by 0x%02x = 0x%02x", mixingVector[(startingIndex + i) %4], state[i][column], newByteData[i]);
             }
-
+            //printf("\n");
             for (int i = 1; i < 4; i++)
             {
                 newByteData[i] = newByteData[i - 1] ^ newByteData[i]; //add each previous entry to current entry. This results in the last entry being the summation of the whole array
+                //printf("\nnewByteData[%d] = ox%02x", i, newByteData[i]);
             }
 
-            state[row][column] = newByteData[3];
+            newState[row][column] = newByteData[3];
 
             startingIndex--;
 
@@ -135,6 +140,14 @@ void mixColumns(BYTE state[4][Nb], const BYTE mixingVector[4])
             {
                 startingIndex = 3;
             }
+        }
+    }
+
+    for(int row = 0; row < 4; row++)
+    {
+        for(int column = 0; column < Nb; column++)
+        {
+            state[row][column] = newState[row][column];
         }
     }
 }
