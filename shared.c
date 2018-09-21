@@ -1,4 +1,5 @@
 #include "shared.h"
+#include <stdio.h>
 
 const int Nk[] = {4, 6, 8};
 const int Nr[] = {10, 12, 14};
@@ -56,22 +57,28 @@ BYTE ffMultiply(BYTE a, BYTE b)
     BYTE bitsSet[8];
     BYTE totalSet = 0;
 
+    printf("\nInside ffMultiply, a = 0x%x, b = 0x%x\nTesting Bits of b:", a, b);
+
     for (int i = 7; i >= 0; i--)
     {
         if ((bitTest[i] ^ b) < b) //test if a bit was set and now is not
         {
+            printf("\nBit %d was set.", i);
             bitsSet[totalSet] = i;
             totalSet++;
         }
     }
 
+    printf("\nLargest bit set was %d", bitsSet[0]);
+
     BYTE xTimeResults[bitsSet[0] + 1];
 
     xTimeResults[0] = a; //autoset first value since multiplication by 0x01 is the multiplicative identity
 
-    for (int i = 0; i <= bitsSet[0]; i++) //keep feeding xtime to obtain results of multiplying a by higher powers of x
+    for (int i = 1; i <= bitsSet[0]; i++) //keep feeding xtime to obtain results of multiplying a by higher powers of x
     {
         xTimeResults[i] = xtime(xTimeResults[i - 1]);
+        printf("\nxTime response is: 0x%x", xTimeResults[i]);
     }
 
     BYTE result = 0x00;
@@ -79,6 +86,7 @@ BYTE ffMultiply(BYTE a, BYTE b)
     for (int i = 0; i < totalSet; i++)
     {
         result = result ^ xTimeResults[bitsSet[i]]; //retrieve each result corresponding to a bit set in b and XOR it into the result var to get the result of multiplying by all the x's set in b
+        printf("\nResults currently is 0x%x", result);
     }
 
     return result;
