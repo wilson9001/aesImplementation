@@ -1,6 +1,6 @@
 #include "encryption.h"
 
-const BYTE mixColumnVector[4] = {0x02, 0x03, 0x01, 0x01};
+const BYTE mixColumnVector[] = {0x02, 0x03, 0x01, 0x01};
 
 void cipher(BYTE in[4 * Nb], BYTE out[4 * Nb], word w[], keyLength currentKeyLength)
 {

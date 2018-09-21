@@ -15,13 +15,13 @@ typedef enum KeyLength
 } keyLength;
 
 //Index into these arrays with the keyLength enum
-const int Nk[3];
-const int Nr[3];
+extern const int Nk[];
+extern const int Nr[];
 //length of bits in a word, divided into 4 bytes
-const int wordLength;
-const BYTE MODULO;
-const BYTE bitTest[8]; //test for which bits in b are set
-const BYTE Sbox[16][16];
+extern const int wordLength;
+extern const BYTE MODULO;
+extern const BYTE bitTest[]; //test for which bits in b are set
+extern const BYTE Sbox[16][16];
 
 void addRoundKey(BYTE state[4][Nb], word w[Nb]);//may need to make just word w[]...
 

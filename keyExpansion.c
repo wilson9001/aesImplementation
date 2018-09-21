@@ -17,8 +17,6 @@ const unsigned int Rcon[] = { //TODO: Determine type
     0xE8000000, 0xCB000000, 0x8D000000
     };
 
-
-
 void subWord(word w)
 {
     BYTE SRow, SColumn;

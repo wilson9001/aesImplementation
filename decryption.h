@@ -3,8 +3,8 @@
 
 #include "shared.h"
 
-const BYTE InvSbox[16][16];
-const BYTE invMixColumnVector[4];
+extern const BYTE InvSbox[16][16];
+extern const BYTE invMixColumnVector[];
 
 void invShiftRows(BYTE state[4][Nb]);
 

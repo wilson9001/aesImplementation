@@ -3,7 +3,7 @@
 
 #include "shared.h"
 
-const unsigned int Rcon[];
+extern const unsigned int Rcon[];
 
 void subWord(word w);
 

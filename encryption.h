@@ -3,7 +3,7 @@
 
 #include "shared.h"
 
-const BYTE mixColumnVector[4];
+extern const BYTE mixColumnVector[];
 
 void shiftRows(BYTE state[4][Nb]);
 
