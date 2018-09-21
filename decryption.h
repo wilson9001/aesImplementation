@@ -28,6 +28,6 @@ void invShiftRows();
 
 void addRoundKey();
 
-void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word *w, keyLength currentKeyLength);
+void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word w[], keyLength currentKeyLength);
 
 #endif

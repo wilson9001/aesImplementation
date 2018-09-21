@@ -24,8 +24,8 @@ const BYTE Sbox[16][16] = {
 
 const BYTE mixColumnVector[] = {0x02, 0x03, 0x01, 0x01};
 
-void shiftRows(BYTE** state/*[4][Nb]*/);
+void shiftRows(BYTE state[4][Nb]);
 
-void cipher(BYTE* in/*[4*Nb]*/, BYTE* out/*[4*Nb]*/, word* w, keyLength currentKeyLength);
+void cipher(BYTE in[4*Nb], BYTE* out[4*Nb], word w[], keyLength currentKeyLength);
 
 #endif

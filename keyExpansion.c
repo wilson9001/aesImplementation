@@ -28,7 +28,7 @@ void rotWord(word w)
     }
 }
 
-void keyExpansion(BYTE* key/*[4*Nk]*/, word* w/*[Nb*(Nr+1)]*/, keyLength currentKeyLength)
+void keyExpansion(BYTE key[], word w[], keyLength currentKeyLength)
 {
     word temp;
 
