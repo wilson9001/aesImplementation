@@ -1,23 +1,21 @@
 #include "decryption.h"
 
-void invShiftRows()
+void invShiftRows(BYTE** state/*[4][Nb]*/)
 {
+    BYTE rowCopy[Nb];
 
-}
+    for (int row = 1; row < 4; row++)
+    {
+        for(int column = 0; column < Nb; column++)
+        {
+            rowCopy[column] = state[row][column];
+        }
 
-void invSubBytes()
-{
-
-}
-
-void invMixColumns()
-{
-
-}
-
-void addRoundKey()
-{
-    
+        for(int column = Nb-1; column <= 0; column--)
+        {
+            state[row][column] = rowCopy[(column - row) % Nb];
+        }
+    }
 }
 
 void invCipher(BYTE* in/*[4*Nb]*/, BYTE* out/*[4*Nb]*/, word* w, keyLength currentKeyLength)
@@ -37,13 +35,13 @@ void invCipher(BYTE* in/*[4*Nb]*/, BYTE* out/*[4*Nb]*/, word* w, keyLength curre
     for(int round = Nr[currentKeyLength] - 1; round < 1; round--)
     {
         invShiftRows(state);
-        invSubBytes(state);
+        subBytes(state, InvSbox);
         addRoundKey(state, w[round * Nb]);
-        invMixColumns(state);
+        mixColumns(state, invMixColumnVector);
     }
 
     invShiftRows(state);
-    invSubBytes(state);
+    subBytes(state, InvSbox);
     addRoundKey(state, w[0]);
 
     for(int row = 0; row < 4; row++)

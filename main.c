@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "constants.h"
+#include "shared.h"
 #include "encryption.h"
 #include "decryption.h"
 

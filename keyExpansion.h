@@ -1,7 +1,7 @@
 #ifndef KEY_EXPANSION
 #define KEY_EXPANSION
 
-#include "constants.h"
+#include "shared.h"
 
 const unsigned int Rcon[] = { //TODO: Determine type...short?
     0x00000000, // Rcon[] is 1-based, so the first entry is just a place holder
