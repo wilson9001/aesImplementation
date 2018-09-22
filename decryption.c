@@ -50,6 +50,8 @@ void invShiftRows(BYTE state[4][Nb])
 void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word w[], keyLength currentKeyLength)
 {
     BYTE state[4][Nb];
+    printf("\nround[ 0].iinput\t");
+    printIO(in);
 
     for (int row = 0; row < 4; row++)
     {
@@ -69,20 +71,49 @@ void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word w[], keyLength currentKeyLeng
             printf("0x%02x, ", state[row][column]);
         }
     }*/
+    printf("\nround[ 0].ik_sch\t");
+    printKeySchedule(&w[Nr[currentKeyLength] * Nb]);
 
-    //printf("\nAdding round key beginning at index %d", Nr[currentKeyLength] * Nb);
     addRoundKey(state, &w[Nr[currentKeyLength] * Nb]);
 
+    int roundTracker = 1;
     for(int round = Nr[currentKeyLength] - 1; round > 0; round--)
     {
+        printf("\nround[%2d].start\t\t", roundTracker);
+        printState(state);
+
+        printf("\nround[%2d].is_row\t", roundTracker);
         invShiftRows(state);
+        printState(state);
+
+        printf("\nround[%2d].is_box\t", roundTracker);
         subBytes(state, InvSbox);
+        printState(state);
+ 
+        printf("\nround[%2d].ik_sch\t", roundTracker);
+        printKeySchedule(&w[round * Nb]);
         addRoundKey(state, &w[round * Nb]);
+        printf("\nround[%2d].ik_add\t", roundTracker);
+        printState(state);
+
         mixColumns(state, invMixColumnVector);
+
+        roundTracker++;
     }
 
+    printf("\nround[%2d].start\t\t", roundTracker);
+    printState(state);
+
+    printf("\nround[%2d].is_row\t", roundTracker); 
     invShiftRows(state);
+    printState(state);
+
+    printf("\nround[%2d].is_box\t", roundTracker);
     subBytes(state, InvSbox);
+    printState(state);
+
+    printf("\nround[%2d].ik_sch\t", roundTracker);
+    printKeySchedule(&w[0]);
     addRoundKey(state, &w[0]);
 
     for(int row = 0; row < 4; row++)
@@ -92,4 +123,6 @@ void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word w[], keyLength currentKeyLeng
             out[row + (4 * column)] = state[row][column];
         }
     }
+    printf("\nround[%2d].ioutput\t", roundTracker);
+    printIO(out);
 }

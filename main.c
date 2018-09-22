@@ -6,7 +6,10 @@
 
 int main(int argc, char const *argv[])
 {
-    printf("Beginning Finite Field Tests\n\txtime:\n\t\txtime(0x57) == 0xae\n\t\t");
+    /*
+    printf("----------Begin Unit Tests----------");
+
+    printf("\n\nBeginning Finite Field Tests\n\txtime:\n\t\txtime(0x57) == 0xae\n\t\t");
 
     printf("0x%x", xtime(0x57));
 
@@ -155,12 +158,12 @@ int main(int argc, char const *argv[])
 
     printf("\nEnd Cipher Tests\nBegin InvCipher Tests\n");
 
-    /*printf("\nState is:");
+    //printf("\nState is:");
 
-    for(int row = 0; row < 4; row++)
-    {
-        printf("\n\t\t{0x%02x, 0x%02x, 0x%02x, 0x%02x},", state[row][0], state[row][1], state[row][2], state[row][3]);
-    }*/
+    //for(int row = 0; row < 4; row++)
+    //{
+    //    printf("\n\t\t{0x%02x, 0x%02x, 0x%02x, 0x%02x},", state[row][0], state[row][1], state[row][2], state[row][3]);
+    //}
 
     printf("\n\n\t\tBYTE round[4][4] (round 1) =    {\n\t\t{0x04, 0xe0, 0x48, 0x28},\n\t\t{0x66, 0xcb, 0xf8, 0x06},\n\t\t{0x81, 0x19, 0xd3, 0x26},\n\t\t{0xe5, 0x9a, 0x7a, 0x4c}}\n");
 
@@ -201,12 +204,12 @@ int main(int argc, char const *argv[])
     printf("\n\n\t\tInvCipher Block Test");
     printf("\n\t\tBYTE in[16] = {\n\t\t0x39, 0x25, 0x84, 0x1d, 0x02, 0xdc, 0x09, 0xfb, 0xdc, 0x11, 0x85, 0x97, 0x19, 0x6a, 0x0b, 0x32 }\n");
 
-    /*printf("\n\n\t\tOut = \n\t\t");
+    //printf("\n\n\t\tOut = \n\t\t");
 
-    for(int i = 0; i < 16; i++)
-    {
-        printf("0x%02x, ", out[i]);
-    }*/
+    //for(int i = 0; i < 16; i++)
+    //{
+    //    printf("0x%02x, ", out[i]);
+    //}
 
     printf("\n\t\tBYTE result[16]  = {\n\t\t0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d, 0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34 }\n");
 
@@ -222,7 +225,49 @@ int main(int argc, char const *argv[])
     }
 
     printf("\nEnd InvCipher Tests");
-    
+
+    printf("\n\n----------End Unit Tests----------");
+    */
+
+    //printf("\n\n----------Begin FIPS Tests----------");
+
+    BYTE in[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+    BYTE out[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    printf("~~~~~C.1~~~~~\nPLAINTEXT:\t\t");
+
+    for(int i = 0; i < 16; i++)
+    {
+        printf("%02x", in[i]);
+    }
+
+    BYTE key128[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
+
+    printf("\nKEY:\t\t\t");
+
+    for(int i = 0; i < 16; i++)
+    {
+        printf("%02x", key128[i]);
+    }
+
+    word w[44];
+
+    keyExpansion(key128, w, KL128);
+
+    printf("\n\nCIPHER (ENCRYPT):");
+
+    cipher(in, out, w, KL128);
+
+    printf("\n\nINVERSE CIPHER (DECRYPT):");
+
+    for(int i = 0; i < 16; i++)
+    {
+        in[i] = out[i];
+        out[i] = 0x00;
+    }
+
+    invCipher(in, out, w, KL128);
+
     printf("\n\n");
     return 0;
 }

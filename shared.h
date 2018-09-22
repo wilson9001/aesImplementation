@@ -23,6 +23,10 @@ extern const BYTE MODULO;
 extern const BYTE bitTest[]; //test for which bits in b are set
 extern const BYTE Sbox[16][16];
 
+void printKeySchedule(word w[Nb]);
+void printState(BYTE state[4][Nb]);
+void printIO(BYTE in[4 * Nb]);
+
 void addRoundKey(BYTE state[4][Nb], word w[]);//may need to make just word w[]...
 
 BYTE ffMultiply(BYTE a, BYTE b);

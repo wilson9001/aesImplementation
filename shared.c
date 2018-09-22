@@ -27,6 +27,36 @@ const BYTE Sbox[16][16] = {
     };
 
 
+void printState(BYTE state[4][Nb])
+{
+    for(int row = 0; row < 4; row++)
+        {
+            for(int column = 0; column < Nb; column++)
+            {
+                printf("%02x", state[row][column]);
+            }
+        }
+}
+
+void printKeySchedule(word w[Nb])
+{
+    for(int column = 0; column < Nb; column++)
+    {
+        for(int row = 0; row < 4; row++)
+        {
+            printf("%02x", w[column][row]);
+        }
+    }
+}
+
+void printIO(BYTE in[4 * Nb])
+{
+    for(int i = 0; i < 4*Nb; i++)
+    {
+        printf("%02x", in[i]);
+    }
+}
+
 void addRoundKey(BYTE state[4][Nb], word w[])
 {
     for(int column = 0; column < Nb; column++)
