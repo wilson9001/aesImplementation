@@ -1,5 +1,19 @@
 
 # Project #1: AES
+
+Statements Required For Submission:
+
+To compile and run code on Ubuntu 18.04.1 (LTS) with gcc (Ubuntu 7.3.0-16ubuntu3) 7.3.0:
+
+```shell
+gcc -std=c11 -Wall -o executable *.c *.h && ./executable
+```
+
+On my honor, I did not refer to any other materials than the ones in the "Resources" section in the instructions below for the development of this program.
+
+This project passes all of the tests specified in Appendix C of the FIPS-197 standard as of 21 Sept. 2018, with the exception of the equivalent inverse cipher which I choose not to make instead of the regular inverse cipher.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Professor Instructions~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Objectives
 
 Gain a concrete understanding of the Advanced Encryption Standard (AES) by implementing it for 128, 192, and 256 bit keys.
@@ -208,5 +222,3 @@ uint8_t result[16] = { 0x39, 0x25, 0x84, 0x1d, 0x02, 0xdc, 0x09, 0xfb,
                        0xdc, 0x11, 0x85, 0x97, 0x19, 0x6a, 0x0b, 0x32 };
 cipher(in,out,w);
 /* Test that out == result *./
-
-
