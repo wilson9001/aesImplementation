@@ -268,6 +268,46 @@ int main(int argc, char const *argv[])
 
     invCipher(in, out, w, KL128);
 
+    for(int i = 0; i < 16; i++)
+    {
+        in[i] = out[i];
+        out[i] = 0x00;
+    }
+
+    printf("\n\n~~~~~C.2~~~~~\nPLAINTEXT:\t\t");
+
+    for(int i = 0; i < 16; i++)
+    {
+        printf("%02x", in[i]);
+    }
+
+    BYTE key192[24] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
+
+    printf("\nKEY:\t\t\t");
+
+    for(int i = 0; i < 24; i++)
+    {
+        printf("%02x", key192[i]);
+    }
+
+    word w1[78];
+
+    keyExpansion(key192, w1, KL192);
+
+    printf("\n\nCIPHER (ENCRYPT):");
+
+    cipher(in, out, w1, KL192);
+
+    printf("\n\nINVERSE CIPHER (DECRYPT):");
+
+    for(int i = 0; i < 16; i++)
+    {
+        in[i] = out[i];
+        out[i] = 0x00;
+    }
+
+    invCipher(in, out, w1, KL192);
+
     printf("\n\n");
     return 0;
 }
