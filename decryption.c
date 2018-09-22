@@ -1,4 +1,5 @@
 #include "decryption.h"
+#include<stdio.h>
 
 const BYTE InvSbox[16][16] = {
     { 0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb } ,
@@ -29,13 +30,20 @@ void invShiftRows(BYTE state[4][Nb])
     {
         for(int column = 0; column < Nb; column++)
         {
+            //printf("\nrowCopy[%d] = state[%d][%d] = 0x%02x", column, row, column, state[row][column]);
             rowCopy[column] = state[row][column];
         }
 
-        for(int column = Nb-1; column <= 0; column--)
+       // printf("\n");
+
+        int column = Nb-1;
+        for(int i = 0; i < Nb; i++)
         {
-            state[row][column] = rowCopy[(column - row) % Nb];
+           // printf("\nstate[%d][%d] = rowCopy[%d] = 0x%02x", row, (column+row)%Nb, column%Nb, rowCopy[column%Nb]);
+            state[row][(column+row)%Nb] = rowCopy[column%Nb];
+            column++;
         }
+       // printf("\n");
     }
 }
 
@@ -51,9 +59,21 @@ void invCipher(BYTE in[4*Nb], BYTE out[4*Nb], word w[], keyLength currentKeyLeng
         }
     }
 
+    /*printf("State copied from in:\n");
+
+    for(int row = 0; row < 4; row++)
+    {
+        printf("\n");
+        for(int column = 0; column < Nb; column++)
+        {
+            printf("0x%02x, ", state[row][column]);
+        }
+    }*/
+
+    //printf("\nAdding round key beginning at index %d", Nr[currentKeyLength] * Nb);
     addRoundKey(state, &w[Nr[currentKeyLength] * Nb]);
 
-    for(int round = Nr[currentKeyLength] - 1; round < 1; round--)
+    for(int round = Nr[currentKeyLength] - 1; round > 0; round--)
     {
         invShiftRows(state);
         subBytes(state, InvSbox);

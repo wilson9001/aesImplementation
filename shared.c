@@ -27,12 +27,13 @@ const BYTE Sbox[16][16] = {
     };
 
 
-void addRoundKey(BYTE state[4][Nb], word w[Nb])
+void addRoundKey(BYTE state[4][Nb], word w[])
 {
     for(int column = 0; column < Nb; column++)
     {
         for(int row = 0; row < 4; row++)
         {
+            //printf("\nstate[%d][%d] ^ word[%d][%d] = 0x%02x ^ 0x%02x = 0x%02x", row, column, column, row, state[row][column], w[column][row], state[row][column] ^ w[column][row]);
             state[row][column] ^= w[column][row]; //Inverted indexing because word is typeDef BYTE[4], so we index the word first then the row in the word.
         }
     }
